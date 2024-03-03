@@ -29,7 +29,7 @@ class HomeController extends Controller
         $photos = Photo::with(['likes', 'comments'])
             ->orderBy('created_at', 'desc')
             ->get();
-        dd($photos);
+            
         return view('home', compact('photos'));
     }
 }

@@ -7,7 +7,7 @@
 
         <div class="card mt-auto">
             <div class="card-body">
-                <form action="{{ route('photo.update', $photo->id) }}" method="post">
+                <form action="{{ route('photo.update', $photo->id) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
@@ -45,6 +45,15 @@
                         <textarea name="description" cols="5" rows="5"
                             class="form-control @error('description') is-invalid @enderror">{{ old('description', $photo->description) }}</textarea>
                         @error('description')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Upload Foto</label>
+                        <input type="file" name="path" class="form-control" value="{{ old('path', $photo->path) }}">
+                        @error('path')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>

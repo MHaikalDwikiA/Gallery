@@ -93,6 +93,7 @@ class PhotoController extends Controller
             'album_id' => 'required',
             'title' => 'required',
             'description' => 'required',
+            'path' => 'required|image|mimes:jpeg,png,jpg,gif',
         ], [
             'album_id.required' => 'Album harus dipilih!',
             'title.required' => 'Judul harus diisi!',
@@ -106,6 +107,16 @@ class PhotoController extends Controller
         $photo->album_id = $request->album_id;
         $photo->title = $request->title;
         $photo->description = $request->description;
+
+        if ($request->hasFile('path')) {
+            $imagePath = Storage::disk('public')->put('images/', $request->file('path'));
+
+            if (!Storage::disk('public')->exists($imagePath)) {
+                return back()->withInput()->withError('Gagal menyimpan foto, silahkan coba kembali!');
+            }
+
+            $photo->path = $imagePath;
+        }
 
         $photo->save();
 
